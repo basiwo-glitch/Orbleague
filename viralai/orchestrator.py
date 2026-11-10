@@ -100,6 +100,32 @@ def recover():
     for ep in db.episodes("status='publishing' AND publish_id IS NULL"):
         db.update_episode(ep["id"], status="ready")
     db.log("orchestrator", "Start/Neustart – Zustand wiederhergestellt")
+    import_samples()
+
+
+def import_samples():
+    """Beim allerersten Start: die 3 Testvideos (samples/) als EP 01–03 übernehmen.
+
+    Status 'inbox' = "wird von Hand gepostet". Sobald sie auf TikTok online sind, ordnet der
+    Analytics-Agent sie in Posting-Reihenfolge zu. Neue Folgen starten dann bei EP 04.
+    """
+    import json
+    import os
+    from . import config
+    path = os.path.join(config.ROOT, "samples", "samples.json")
+    if db.setting("samples_imported") or db.one("SELECT COUNT(*) n FROM episodes")["n"] or not os.path.exists(path):
+        return
+    creative.league_table()
+    for i, s in enumerate(json.load(open(path))):
+        _elo(s["winner"], [o for o in s["orbs"] if o != s["winner"]])
+        db.create_episode(
+            status="inbox", format=s["format"], orbs=s["orbs"], mods=s["mods"], seed=s["seed"], drama=s["drama"],
+            hook=s["hook"], hook_style=s["hook_style"], hook_sub=s["hook_sub"], header=s["header"], captions=s["captions"],
+            cta=s["cta"], post_text=s["post_text"], episode_no=s["episode_no"], arms=s["arms"], idea=s.get("idea"),
+            winner=s["winner"], result=s["result"], duration=s["duration"], approved=1,
+            video_path=os.path.join(config.ROOT, s["video"]), scheduled_at=i + 1, published_at=i + 1)
+    db.set_setting("samples_imported", "1")
+    db.log("orchestrator", "Testvideos als EP 01–03 übernommen (werden nach dem Posten automatisch zugeordnet)")
 
 
 def tick():

@@ -565,6 +565,8 @@ def drama_score(m):
     elif m.key == "territory":
         st = m.standings()
         margin = (st[0][1] - st[1][1]) / (m.cols * m.rows)
+        if margin == 0:
+            return -50.0  # Gleichstand -> Sieger wäre willkürlich, nie verwenden
         score += 8 * max(0, 0.06 - margin) / 0.06
         # Comeback: Führender bei 70 % ist nicht Sieger
         leader70 = None

@@ -1,0 +1,232 @@
+[
+ {
+  "episode_no": 1,
+  "format": "escape",
+  "orbs": [
+   "VENOM",
+   "CRUSH",
+   "NOVA",
+   "FROST",
+   "COBALT",
+   "VOLT"
+  ],
+  "mods": {},
+  "seed": 614036922,
+  "drama": 14.0,
+  "hook": "ONLY 1 ORB ESCAPES",
+  "hook_style": "challenge",
+  "hook_sub": "Pick yours before the gate opens",
+  "header": "WHO ESCAPES FIRST?",
+  "captions": [
+   {
+    "t": 3.01,
+    "text": "THE GATE IS OPEN",
+    "dur": 1.8
+   },
+   {
+    "t": 9.47,
+    "text": "SO CLOSE...",
+    "dur": 1.8
+   },
+   {
+    "t": 15.91,
+    "text": "ANY SECOND NOW...",
+    "dur": 1.8
+   }
+  ],
+  "cta": "Who should fight CRUSH next?",
+  "arms": [
+   "fmt:escape",
+   "mod:escape:classic",
+   "hook:challenge"
+  ],
+  "winner": "CRUSH",
+  "duration": 24.7,
+  "result": {
+   "record": {
+    "VENOM": "0-1",
+    "CRUSH": "1-0",
+    "NOVA": "0-1",
+    "FROST": "0-1",
+    "COBALT": "0-1",
+    "VOLT": "0-1"
+   },
+   "applied": true,
+   "standings": []
+  },
+  "idea": {
+   "variant": "classic",
+   "story": {
+    "champion": "BLAZE",
+    "underdog": "BLAZE",
+    "rivals": [
+     "BLAZE",
+     "CRUSH"
+    ]
+   },
+   "reason": "challenge",
+   "theme": {},
+   "twist": {}
+  },
+  "video": "samples/orbleague_test1_escape.mp4",
+  "post_text": "Only one gets out. Who was your pick? 👇 #orbleague #escape #satisfying #physics #simulation"
+ },
+ {
+  "episode_no": 2,
+  "format": "clash",
+  "orbs": [
+   "CRUSH",
+   "VENOM",
+   "BLAZE",
+   "NOVA"
+  ],
+  "mods": {},
+  "seed": 3223882,
+  "drama": 26.1,
+  "hook": "PREDICT THE WINNER",
+  "hook_style": "prediction",
+  "hook_sub": "Comment before the first KO",
+  "header": "LAST ORB STANDING",
+  "captions": [
+   {
+    "t": 11.55,
+    "text": "BLAZE GOT SPIKES",
+    "dur": 1.8
+   },
+   {
+    "t": 17.48,
+    "text": "NOVA IS OUT!",
+    "dur": 1.8
+   },
+   {
+    "t": 30.01,
+    "text": "SUDDEN DEATH",
+    "dur": 1.8,
+    "color": [
+     255,
+     90,
+     90
+    ]
+   },
+   {
+    "t": 32.96,
+    "text": "BLAZE GOT SPIKES",
+    "dur": 1.8
+   }
+  ],
+  "cta": "Rematch? Pick BLAZE's next rival",
+  "arms": [
+   "fmt:clash",
+   "mod:clash:classic",
+   "hook:prediction"
+  ],
+  "winner": "BLAZE",
+  "duration": 38.93,
+  "result": {
+   "record": {
+    "CRUSH": "1-1",
+    "VENOM": "0-2",
+    "BLAZE": "1-0",
+    "NOVA": "0-2"
+   },
+   "applied": true,
+   "standings": [
+    [
+     "BLAZE",
+     10.3
+    ]
+   ]
+  },
+  "idea": {
+   "variant": "classic",
+   "story": {
+    "champion": "CRUSH",
+    "underdog": "VENOM",
+    "rivals": [
+     "CRUSH",
+     "BLAZE"
+    ]
+   },
+   "reason": "prediction",
+   "theme": {},
+   "twist": {}
+  },
+  "video": "samples/orbleague_test2_clash.mp4",
+  "post_text": "Called the winner before the first KO? Be honest 👇 #orbleague #battle #satisfying #physics #simulation"
+ },
+ {
+  "episode_no": 3,
+  "format": "territory",
+  "orbs": [
+   "CRUSH",
+   "CORAL",
+   "COBALT",
+   "VENOM"
+  ],
+  "mods": {},
+  "seed": 571956173,
+  "drama": 26.78,
+  "hook": "4 ORBS. 1 MAP.",
+  "hook_style": "challenge",
+  "hook_sub": "Pick a color before it starts",
+  "header": "BIGGEST TERRITORY WINS",
+  "captions": [
+   {
+    "t": 10.8,
+    "text": "WATCH THE BORDERS",
+    "dur": 1.8
+   },
+   {
+    "t": 17.0,
+    "text": "CORAL TAKES THE LEAD",
+    "dur": 1.8
+   },
+   {
+    "t": 27.0,
+    "text": "IT'S CLOSE...",
+    "dur": 1.8
+   }
+  ],
+  "cta": "Rematch? Pick VENOM's next rival",
+  "arms": [
+   "fmt:territory",
+   "mod:territory:classic",
+   "hook:challenge"
+  ],
+  "winner": "VENOM",
+  "duration": 40.3,
+  "result": {
+   "record": {
+    "CRUSH": "1-2",
+    "CORAL": "0-1",
+    "COBALT": "0-2",
+    "VENOM": "1-2"
+   },
+   "applied": true,
+   "standings": [
+    [
+     "VENOM",
+     119
+    ],
+    [
+     "COBALT",
+     113
+    ],
+    [
+     "CORAL",
+     110
+    ],
+    [
+     "CRUSH",
+     98
+    ]
+   ]
+  },
+  "idea": {
+   "variant": "classic",
+   "reason": "sample"
+  },
+  "video": "samples/orbleague_test3_territory.mp4",
+  "post_text": "Which color did you pick? 👇 #orbleague #territory #satisfying #physics #simulation"
+ }
+]
