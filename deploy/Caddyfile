@@ -1,0 +1,4 @@
+# /etc/caddy/Caddyfile – Caddy besorgt das HTTPS-Zertifikat automatisch
+orbleague.deinedomain.de {
+    reverse_proxy 127.0.0.1:8080
+}

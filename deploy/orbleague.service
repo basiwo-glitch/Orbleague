@@ -1,0 +1,16 @@
+[Unit]
+Description=ORB LEAGUE – autonomer TikTok-Creator
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=orbleague
+WorkingDirectory=/opt/orbleague
+ExecStart=/usr/bin/python3 -m viralai run
+Restart=always
+RestartSec=10
+Environment=PYTHONUNBUFFERED=1
+Nice=5
+
+[Install]
+WantedBy=multi-user.target
