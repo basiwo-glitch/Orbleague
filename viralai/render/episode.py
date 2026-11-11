@@ -15,7 +15,7 @@ from .formats import FORMATS
 LAYOUT = {  # y-Positionen pro Format (TikTok-UI-Safe-Zones beachtet)
     "escape": {"hook": 330, "header": 250, "caption": 470},
     "clash": {"hook": 330, "header": 250, "caption": 420},
-    "territory": {"hook": 250, "header": 235, "caption": 345, "sub_dy": 100},
+    "territory": {"hook": 330, "header": 235, "caption": 345, "sub_dy": 95},
 }
 END_CARD = 3.4
 WINNER_PAUSE = 0.9
@@ -143,18 +143,28 @@ def _hook(img, spec, lay, t):
     hook = spec.get("hook", "")
     header = spec.get("header", "")
     if t < 2.6:
-        s = _ease_pop(t / 0.35)
-        if s > 0.02:
-            E.paste(img, E.scaled(E.text_sprite(hook, 88, brand.WHITE), s), 540, lay["hook"])
-            sub = spec.get("hook_sub")
-            if sub and t > 0.5:
-                E.paste(img, E.with_alpha(E.text_sprite(sub, 46, brand.ACCENT, brand.FONT_BOLD), min(1, (t - 0.5) / 0.3)), 540, lay["hook"] + lay.get("sub_dy", 120))
+        # Ab Frame 0 komplett sichtbar: das erste Bild ist zugleich das Vorschaubild im Profil-Raster
+        s = 1.0 + 0.05 * abs(__import__("math").sin(t * 5.0)) * min(1.0, t * 4)
+        E.paste(img, E.scaled(_one_line(hook, 88), s), 540, lay["hook"])
+        sub = spec.get("hook_sub")
+        if sub:
+            E.paste(img, E.text_sprite(sub, 46, brand.ACCENT, brand.FONT_BOLD), 540, lay["hook"] + lay.get("sub_dy", 120))
     else:
         a = min(1, (t - 2.6) / 0.3)
         E.paste(img, E.with_alpha(E.text_sprite(header, 52, brand.WHITE), a), 540, lay["header"])
     # Episoden-Badge
     badge = f"S{spec.get('season', 1)} · EP {spec.get('episode_no', 1):02d}"
     E.paste(img, E.with_alpha(E.text_sprite(badge, 30, brand.ACCENT, brand.FONT_BOLD, 3), 0.9), 540, 165)
+
+
+def _one_line(text, size, color=brand.WHITE):
+    """Hook immer einzeilig: Schrift verkleinern statt umbrechen (sonst ragt er aus dem Profil-Raster)."""
+    while size > 56:
+        spr = E.text_sprite(text, size, color)
+        if spr.height < size * 1.9:
+            return spr
+        size -= 6
+    return E.text_sprite(text, size, color)
 
 
 def _captions(img, captions, lay, t):
@@ -171,7 +181,7 @@ def _captions(img, captions, lay, t):
 def _intro_labels(img, match, t):
     if t > 2.8:
         return
-    a = min(1, t / 0.2) * (1 if t < 2.4 else max(0, (2.8 - t) / 0.4))
+    a = 1 if t < 2.4 else max(0, (2.8 - t) / 0.4)
     for b in match.bodies:
         if b.alive:
             E.paste(img, E.with_alpha(E.text_sprite(b.name, 30, b.color, brand.FONT_BOLD, 3), a), b.x, b.y - b.r - 30)

@@ -123,7 +123,8 @@ def import_samples():
             hook=s["hook"], hook_style=s["hook_style"], hook_sub=s["hook_sub"], header=s["header"], captions=s["captions"],
             cta=s["cta"], post_text=s["post_text"], episode_no=s["episode_no"], arms=s["arms"], idea=s.get("idea"),
             winner=s["winner"], result=s["result"], duration=s["duration"], approved=1,
-            video_path=os.path.join(config.ROOT, s["video"]), scheduled_at=i + 1, published_at=i + 1)
+            video_path=(os.path.join(config.ROOT, s["video"]) if s.get("video") and os.path.exists(os.path.join(config.ROOT, s["video"])) else None),
+            scheduled_at=i + 1, published_at=i + 1)
     db.set_setting("samples_imported", "1")
     db.log("orchestrator", "Testvideos als EP 01–03 übernommen (werden nach dem Posten automatisch zugeordnet)")
 

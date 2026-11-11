@@ -405,9 +405,9 @@ class Territory(Match):
     substeps = 6
 
     def setup(self):
-        self.max_t = self.mods.get("duration", 36.0)
-        self.x0, self.y0, self.cell = 60, 430, 48
-        self.cols, self.rows = 20, 22
+        self.max_t = self.mods.get("duration", 32.0)
+        self.x0, self.y0, self.cell = 60, 480, 48
+        self.cols, self.rows = 20, 21
         n = len(self.orbs_names)
         self.grid = [[0] * self.cols for _ in range(self.rows)]
         for r in range(self.rows):
@@ -542,7 +542,7 @@ def drama_score(m):
     if m.key == "escape":
         near = sum(1 for e in ev if e["type"] == "bounce" and e.get("near_miss"))
         score += min(near, 8) * 1.0
-        score += 6 if 17 <= dur <= 34 else (-6 if dur < 10 else 0)
+        score += 6 if 15 <= dur <= 28 else (-6 if dur < 10 else 0)
         nms = [e for e in ev if e["type"] == "bounce" and e.get("near_miss")]
         score += 0.5 * len({e["orb"] for e in nms})  # mehrere Kandidaten = offener Ausgang
         score += min(4, sum(1 for e in nms if e["t"] > dur - 6))  # Spannung kurz vor dem Ausbruch
@@ -552,7 +552,7 @@ def drama_score(m):
         kos = [e for e in ev if e["type"] == "ko"]
         crits = sum(1 for e in ev if e["type"] == "hit" and e.get("crit"))
         score += min(crits, 6) * 0.5
-        score += 6 if 22 <= dur <= 42 else -4
+        score += 6 if 20 <= dur <= 34 else -4
         final = m.bodies[[b.name for b in m.bodies].index(m.winner)]
         score += 5 if 0 < final.hp < 30 else 0  # knapper Sieg
         if any(e["type"] == "timeout" for e in ev):
