@@ -6,6 +6,14 @@ from zoneinfo import ZoneInfo
 from .. import config, db, tiktok
 
 
+def _every_hour():
+    last = float(db.setting("last_wait_warn") or 0)
+    if time.time() - last > 3600:
+        db.set_setting("last_wait_warn", time.time())
+        return True
+    return False
+
+
 def slot_times(days=2):
     """Nächste Veröffentlichungs-Slots (Unix-Zeit) laut Einstellungen."""
     tz = ZoneInfo(config.TIMEZONE)
@@ -34,12 +42,25 @@ def due_episode():
     return db.episodes("status='ready' AND scheduled_at <= ?", (time.time(),), order="scheduled_at ASC", limit=1)
 
 
+def reschedule_overdue():
+    """Verpasste Slots (TikTok nicht verbunden, Modus aus, Pause) nicht nachholen, sondern in freie Slots schieben.
+    Verhindert, dass nach dem Verbinden alle liegengebliebenen Videos auf einmal hochgeladen werden."""
+    overdue = db.episodes("status='ready' AND scheduled_at < ?", (time.time() - 3600,), order="scheduled_at ASC")
+    if not overdue:
+        return
+    slots = free_slots(int(db.setting("buffer_days") or 1) + 1)
+    for ep, slot in zip(overdue, slots):
+        db.update_episode(ep["id"], scheduled_at=slot)
+    db.log("publishing", f"{min(len(overdue), len(slots))} verpasste(s) Video(s) auf die nächsten freien Slots verschoben")
+
+
 def publish_due():
+    reschedule_overdue()
     mode = db.setting("publish_mode")
     if mode == "off":
         return
     if not tiktok.connected():
-        if db.episodes("status='ready' AND scheduled_at <= ?", (time.time(),), limit=1):
+        if db.episodes("status='ready' AND scheduled_at <= ?", (time.time(),), limit=1) and _every_hour():
             db.log("publishing", "Fälliges Video wartet: TikTok ist noch nicht verbunden", "WARN")
         return
     for ep in due_episode():

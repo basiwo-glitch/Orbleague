@@ -39,9 +39,12 @@ In der TikTok-App: neuer Account, Name **ORB LEAGUE**, Handle z. B. `@orbleague`
 Ein kleiner VPS mit Ubuntu 24.04 (2 vCPU, 4 GB RAM reichen; ca. 5–8 €/Monat). Dazu eine (Sub-)Domain, die auf die Server-IP zeigt – kostenlos z. B. über DuckDNS.
 
 ```bash
-# auf dem Server, als root, im entpackten Projektordner:
-bash deploy/install.sh orbleague.deinedomain.de
+# auf dem Server, als root (Debian 12/13 oder Ubuntu):
+apt-get update && apt-get install -y git
+git clone https://github.com/basiwo-glitch/orbleague /opt/orbleague
+bash /opt/orbleague/deploy/install.sh DEINE-DOMAIN
 ```
+Updates später: `bash /opt/orbleague/deploy/update.sh`
 Das Skript installiert ffmpeg, Python-Pakete, Caddy (automatisches HTTPS) und einen systemd-Dienst, der nach Neustarts automatisch weiterläuft. Am Ende zeigt es das Dashboard-Passwort.
 
 Ab jetzt produziert das System bereits Videos (sichtbar im Dashboard), lädt aber noch nichts hoch.
