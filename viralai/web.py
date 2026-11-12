@@ -19,7 +19,8 @@ from .agents import analytics, creative, strategy
 from .orchestrator import revert_league
 
 TZ = ZoneInfo(config.TIMEZONE)
-PUBLIC = ("/privacy", "/terms", "/auth/callback", "/favicon.ico", "/healthz")
+PUBLIC = ("/privacy", "/terms", "/auth/callback", "/favicon.ico", "/healthz", "/tiktok")
+VERIFY_RE = re.compile(r"^/(tiktok[A-Za-z0-9_-]{4,80}\.txt)$")
 STATUS_DE = {"planned": "geplant", "rendering": "wird produziert", "ready": "fertig", "publishing": "wird hochgeladen",
              "inbox": "Entwurf in App", "published": "veröffentlicht", "qa_failed": "Qualität ✗", "failed": "Fehler",
              "rejected": "abgelehnt"}
@@ -273,6 +274,12 @@ class H(BaseHTTPRequestHandler):
                 return self._send(200, view_settings(qs.get("msg", [""])[0]))
             if path == "/logs":
                 return self._send(200, view_logs())
+            m = VERIFY_RE.match(path)
+            if m:  # TikTok-Domainverifizierung: Datei liegt in DATA_DIR (siehe README)
+                f = config.DATA_DIR / m.group(1)
+                if f.exists():
+                    return self._send(200, f.read_text(), "text/plain; charset=utf-8")
+                return self._send(404, "not found", "text/plain")
             if path == "/healthz":
                 return self._send(200, "ok", "text/plain")
             if path == "/api/status":
